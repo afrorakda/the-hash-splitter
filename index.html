@@ -28,6 +28,7 @@
             justify-content: center;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
+            /* システムメニューの長押しを全体で禁止 */
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
@@ -82,6 +83,7 @@
             -webkit-appearance: none;
             -webkit-text-fill-color: var(--main) !important;
             opacity: 1 !important;
+            /* textarea内だけは選択・長押しを許可する */
             user-select: text !important;
             -webkit-user-select: text !important;
             -webkit-touch-callout: default !important;
@@ -108,7 +110,6 @@
         }
         .clr-btn.active { display: flex; }
 
-        /* Action Buttons */
         .btn-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -212,16 +213,22 @@
         const raw = textInput.value;
         if (!raw.trim()) return;
 
-        // 特殊文字や既存の#を剥ぎ取り、キーワードに分解
-        // コンマ、ピリオド、全角スペース、改行などを区切りとして扱う
+        // 1. 全ての記号、句読点、シャープを剥ぎ取り、スペースへ置換
+        // 2. スペースや改行で配列化
+        // 3. 空白文字を除去
         let words = raw.replace(/[#,.、。]/g, ' ')
                        .split(/[\s\n\r]+/)
-                       .filter(w => w.trim() !== '');
+                       .map(w => w.trim())
+                       .filter(w => w !== '');
+
+        // 4. 重複排除（Unique）
+        words = [...new Set(words)];
 
         if (words.length === 0) return;
 
-        // 全てに#を付けて結合
+        // 5. 全ての頭に#を一括付与して結合（重複シャープ防止済み）
         const result = words.map(w => '#' + w).join(separator);
+        
         textInput.value = result;
         updateUI();
 
