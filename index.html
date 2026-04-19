@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Hash Splitter - Fridge Combo</title>
+    <title>Hash Splitter</title>
     
     <link rel="icon" href="image_119.png">
     <link rel="apple-touch-icon" href="image_119.png">
@@ -29,8 +29,6 @@
             justify-content: center;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
-            user-select: none;
-            -webkit-user-select: none;
             padding: calc(env(safe-area-inset-top, 20px) + 20px) 20px env(safe-area-inset-bottom, 20px) 20px;
         }
 
@@ -65,10 +63,7 @@
         }
         #charCount { color: var(--main); }
 
-        .input-wrapper { 
-            position: relative; 
-            margin-bottom: 20px;
-        }
+        .input-wrapper { position: relative; margin-bottom: 20px; }
         
         textarea {
             width: 100%;
@@ -127,7 +122,6 @@
             font-size: 0.85rem;
             font-weight: 900;
             cursor: pointer;
-            transition: all 0.2s;
             -webkit-appearance: none;
             -webkit-text-fill-color: #fff;
         }
@@ -152,7 +146,7 @@
         footer { font-size: 0.7rem; color: #bbb; line-height: 1.6; font-weight: 600; padding-bottom: env(safe-area-inset-bottom, 20px); }
         footer a { color: inherit; text-decoration: underline; }
 
-        /* モーダルの完全独立修正 */
+        /* モーダル：初期状態 display: none を厳守 */
         .modal {
             display: none; 
             position: fixed; 
@@ -171,8 +165,6 @@
             border-radius: var(--radius); 
             text-align: left; 
             position: relative; 
-            color: var(--main);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         .close-x { 
             position: absolute; 
@@ -209,14 +201,14 @@
     </div>
 
     <footer>
-        <div id="legal-text">
+        <div>
             No login / No tracking / No ads / Browser only<br>
             <a href="https://afrorakda.com/privacy/">Privacy Policy</a> / afrorakda © 2026
         </div>
     </footer>
 </div>
 
-<div id="modal" onclick="hideModal()">
+<div id="modal" class="modal" style="display: none;" onclick="hideModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-x" onclick="hideModal()">×</span>
         <h2 style="font-size:1.3rem; font-weight:900; margin-bottom:15px;">📱 Install</h2>
@@ -247,14 +239,11 @@
                        .filter(w => w !== '');
 
         words = [...new Set(words)];
-
         if (words.length === 0) return;
 
         const result = words.map(w => '#' + w).join(separator);
-        
         textInput.value = result;
         updateUI();
-
         copyToClipboard(result, separator === ' ' ? 'btnSpace' : 'btnNewline');
     }
 
@@ -262,9 +251,7 @@
         try {
             await navigator.clipboard.writeText(text);
             feedback(btnId);
-        } catch (err) {
-            console.error("Copy failed");
-        }
+        } catch (err) {}
     }
 
     function feedback(btnId) {
@@ -290,9 +277,6 @@
     async function loadFooter() {
         try {
             const response = await fetch('footer.json');
-            if (response.ok) {
-                const data = await response.json();
-            }
         } catch (e) {}
     }
     window.onload = loadFooter;
