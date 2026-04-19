@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Hash Splitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Hash Splitter - Fridge Combo</title>
     
     <link rel="icon" href="image_119.png">
     <link rel="apple-touch-icon" href="image_119.png">
@@ -15,92 +15,94 @@
             --accent: #eee;
             --input-bg: #fafafa;
             --radius: 15px;
-            --text-gray: #666;
-            --green: #4caf50;
+            --text-gray: #999;
+            --green: #2ecc71;
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg);
             color: var(--main);
-            margin: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
-            /* システムメニューの長押しを全体で禁止 */
             user-select: none;
             -webkit-user-select: none;
-            -webkit-touch-callout: none;
+            padding: calc(env(safe-area-inset-top, 20px) + 20px) 20px env(safe-area-inset-bottom, 20px) 20px;
         }
 
         .container {
             width: 100%;
             max-width: 420px;
-            padding: 20px;
-            box-sizing: border-box;
             text-align: center;
             display: flex;
             flex-direction: column;
         }
 
-        header { margin-bottom: 15px; }
-        h1 { font-size: 1.8rem; font-weight: 800; margin: 0; letter-spacing: -1px; }
-        .subtitle { font-size: 0.85rem; color: var(--text-gray); font-weight: 600; margin-top: 4px; }
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 5px; 
+        }
+        h1 { font-size: 1.6rem; font-weight: 900; letter-spacing: -1.5px; }
+        .hub-link {
+            text-decoration: none; font-size: 0.8rem; font-weight: 800; color: var(--main);
+            background: var(--accent); padding: 8px 14px; border-radius: 12px;
+        }
+        .subtitle { font-size: 0.85rem; color: var(--text-gray); font-weight: 700; margin-bottom: 25px; text-align: left; }
 
         .counter-area {
             text-align: right;
             font-size: 11px;
             font-weight: 800;
             color: var(--text-gray);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             letter-spacing: 1px;
         }
         #charCount { color: var(--main); }
 
         .input-wrapper { 
             position: relative; 
-            flex-grow: 1;
-            min-height: 250px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         textarea {
             width: 100%;
-            height: 100%;
+            height: 180px;
             padding: 15px;
             padding-right: 45px;
             border: 2px solid var(--accent);
             border-radius: var(--radius);
             background: var(--input-bg);
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.5;
             color: var(--main) !important;
-            box-sizing: border-box;
             outline: none;
             resize: none;
             -webkit-appearance: none;
             -webkit-text-fill-color: var(--main) !important;
             opacity: 1 !important;
-            /* textarea内だけは選択・長押しを許可する */
             user-select: text !important;
             -webkit-user-select: text !important;
-            -webkit-touch-callout: default !important;
         }
-        textarea::placeholder { color: #bbb; -webkit-text-fill-color: #bbb; }
+        textarea::placeholder { color: #bbb; -webkit-text-fill-color: #bbb; font-weight: 700; }
 
         .clr-btn {
             position: absolute;
-            right: 10px;
-            top: 10px;
-            width: 30px;
-            height: 30px;
-            background: rgba(0,0,0,0.05);
+            right: 12px;
+            top: 12px;
+            width: 28px;
+            height: 28px;
+            background: #ccc;
             border: none;
             border-radius: 50%;
-            color: #888;
-            font-size: 1.2rem;
+            color: #fff;
+            font-size: 16px;
             font-weight: 800;
             cursor: pointer;
             display: none;
@@ -114,47 +116,52 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .action-btn {
             background: var(--main);
             color: #fff;
             border: none;
-            padding: 18px 10px;
+            padding: 20px 10px;
             border-radius: var(--radius);
-            font-size: 0.9rem;
-            font-weight: 800;
+            font-size: 0.85rem;
+            font-weight: 900;
             cursor: pointer;
             transition: all 0.2s;
+            -webkit-appearance: none;
+            -webkit-text-fill-color: #fff;
         }
         .action-btn:active { transform: scale(0.96); opacity: 0.9; }
         .action-btn.success { background: var(--green); }
 
-        .footer-btns { display: flex; gap: 10px; margin-bottom: 20px; }
+        .footer-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; margin-top: auto; }
         .kofi-btn {
-            flex: 6; background: var(--main); color: #fff;
-            padding: 12px; border-radius: var(--radius);
-            text-decoration: none; font-weight: bold; font-size: 13px;
+            background: var(--main); color: #fff;
+            padding: 16px; border-radius: var(--radius);
+            text-decoration: none; font-weight: 900; font-size: 0.9rem;
             display: flex; align-items: center; justify-content: center;
+            -webkit-text-fill-color: #fff;
         }
         .home-btn {
-            flex: 4; background: var(--accent); color: var(--main);
-            border: none; padding: 12px; border-radius: var(--radius);
-            font-weight: 800; font-size: 12px; cursor: pointer;
+            background: var(--accent); color: var(--main);
+            border: none; padding: 14px; border-radius: var(--radius);
+            font-weight: 800; font-size: 0.85rem; cursor: pointer;
+            -webkit-appearance: none;
         }
 
-        footer { font-size: 10px; color: #aaa; line-height: 1.6; font-weight: 500; padding-bottom: 10px; }
+        footer { font-size: 0.7rem; color: #bbb; line-height: 1.6; font-weight: 600; padding-bottom: env(safe-area-inset-bottom, 20px); }
         footer a { color: inherit; text-decoration: underline; }
 
-        #modal {
+        .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 100;
+            backdrop-filter: blur(4px);
         }
         .modal-content {
-            background: #fff; width: 85%; max-width: 340px; padding: 30px;
+            background: #fff; width: 85%; max-width: 340px; padding: 35px;
             border-radius: var(--radius); text-align: left; position: relative; color: var(--main);
         }
-        .close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #888; cursor: pointer; }
+        .close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #ccc; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -162,8 +169,9 @@
 <div class="container">
     <header>
         <h1>Hash Splitter</h1>
-        <p class="subtitle">Format tags for X & Instagram.</p>
+        <a href="https://afrorakda.github.io/" class="hub-link">🏠 Hub</a>
     </header>
+    <p class="subtitle">Format tags for X & Instagram.</p>
 
     <div class="counter-area">CHARS: <span id="charCount">0</span></div>
 
@@ -179,22 +187,24 @@
 
     <div class="footer-btns">
         <a href="https://ko-fi.com/afrorakda" target="_blank" class="kofi-btn">☕️buy me a coffee</a>
-        <button class="home-btn" onclick="showModal()">Add Home</button>
+        <button class="home-btn" onclick="showModal()">Add to Home Screen</button>
     </div>
 
     <footer>
-        <div>No login / No tracking / No ads / Browser only</div>
-        <div><a href="https://afrorakda.com/privacy/">Privacy Policy</a> / afrorakda © 2026</div>
+        <div id="legal-text">
+            No login / No tracking / No ads / Browser only<br>
+            <a href="https://afrorakda.com/privacy/">Privacy Policy</a> / afrorakda © 2026
+        </div>
     </footer>
 </div>
 
 <div id="modal" onclick="hideModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-x" onclick="hideModal()">×</span>
-        <h3>📱 Install</h3>
-        <p>Add to your home screen.</p>
-        <p>🍏 <strong>iPhone (Safari):</strong><br>Tap Share, then Add to Home Screen.</p>
-        <p>🤖 <strong>Android (Chrome):</strong><br>Tap Menu (⋮), then Add to Home Screen.</p>
+        <h2 style="font-size:1.3rem; font-weight:900; margin-bottom:15px;">📱 Install</h2>
+        <p style="font-size:0.85rem; font-weight:700;">Add to home screen.</p>
+        <p style="font-size:0.85rem; margin-top:15px;">🍏 <strong>iPhone (Safari):</strong><br>Tap Share, then Add to Home Screen.</p>
+        <p style="font-size:0.85rem; margin-top:10px;">🤖 <strong>Android (Chrome):</strong><br>Tap Menu (⋮), then Add to Home Screen.</p>
     </div>
 </div>
 
@@ -213,20 +223,15 @@
         const raw = textInput.value;
         if (!raw.trim()) return;
 
-        // 1. 全ての記号、句読点、シャープを剥ぎ取り、スペースへ置換
-        // 2. スペースや改行で配列化
-        // 3. 空白文字を除去
         let words = raw.replace(/[#,.、。]/g, ' ')
                        .split(/[\s\n\r]+/)
                        .map(w => w.trim())
                        .filter(w => w !== '');
 
-        // 4. 重複排除（Unique）
         words = [...new Set(words)];
 
         if (words.length === 0) return;
 
-        // 5. 全ての頭に#を一括付与して結合（重複シャープ防止済み）
         const result = words.map(w => '#' + w).join(separator);
         
         textInput.value = result;
@@ -263,6 +268,20 @@
 
     function showModal() { document.getElementById('modal').style.display = 'flex'; }
     function hideModal() { document.getElementById('modal').style.display = 'none'; }
+
+    // 鉄壁フッター補助ロジック
+    async function loadFooter() {
+        try {
+            const response = await fetch('footer.json');
+            if (response.ok) {
+                const data = await response.json();
+                // 必要に応じて上書き
+            }
+        } catch (e) {
+            console.log("Offline mode: static footer used.");
+        }
+    }
+    window.onload = loadFooter;
 </script>
 
 </body>
