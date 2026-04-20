@@ -86,8 +86,12 @@
             opacity: 1 !important;
             user-select: text !important;
             -webkit-user-select: text !important;
+            transition: background-color 0.4s ease;
         }
         textarea::placeholder { color: #bbb; -webkit-text-fill-color: #bbb; font-weight: 700; }
+        
+        /* フラッシュ演出用 */
+        .flash { background-color: #d0d0d0 !important; }
 
         .clr-btn {
             position: absolute;
@@ -226,7 +230,6 @@
         });
 
         // SNSで無効になる特殊記号をすべてスペースに置換
-        // . , 、 。 ! ? & % $ + = / : ; ( ) [ ] { } * |
         let words = raw.replace(/[#.,、。！？?!&%$+=\/:;\(\)\[\]\{\}\*\|]/g, ' ')
                        .split(/[\s\n\r]+/)
                        .map(w => w.trim())
@@ -237,11 +240,14 @@
 
         if (words.length === 0) return;
 
-        // ハッシュ付与と結合
         const result = words.map(w => '#' + w).join(separator);
         
         textInput.value = result;
         updateUI();
+
+        // フラッシュ演出
+        textInput.classList.add('flash');
+        setTimeout(() => textInput.classList.remove('flash'), 400);
 
         copyToClipboard(result, separator === ' ' ? 'btnSpace' : 'btnNewline');
     }
